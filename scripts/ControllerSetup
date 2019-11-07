@@ -1,0 +1,15 @@
+:local controllerURL "https://routerboard.cocoon.systems/api/routerboard";
+
+# Do not edit below this line
+# ###########################
+:local jsonScriptURL "https://raw.githubusercontent.com/imperiansystems/routeros/master/scripts/JParseFunctions"
+:local controllerUpdateScriptURL "https://raw.githubusercontent.com/imperiansystems/routeros/master/scripts/ControllerUpdate"
+
+/tool fetch http-method="get" url="$jsonScriptURL"
+/system script add name=JParseFunction policy=read,write source=[/file get [/file find name=JParseFunctions] contents]
+
+/tool fetch http-method="get" url="$controllerUpdateScriptURL"
+/system script add name=ControllerUpdate policy=read,reboot,policy,sensitive,write source=[/file get [/file find name=ControllerUpdate] contents]
+
+/file print file=ControllerConfig
+/file set ControllerConfig.txt content="{ \"controllerURL\": \"$controllerURL\", \"controllerToken\": \"0\" }"
