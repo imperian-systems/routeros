@@ -8,7 +8,7 @@
 /tool fetch http-method="get" url="$jsonScriptURL"
 
 /tool fetch http-method="get" url="$controllerUpdateScriptURL"
-/system script add name=ControllerUpdate policy=read,reboot,policy,sensitive,write source=[/file get [/file find name=ControllerUpdate] contents]
+/system script add name=ControllerUpdate policy=ftp,read,reboot,policy,sensitive,write source=[/file get [/file find name=ControllerUpdate] contents]
 
 :local config "{ \"controllerURL\": \"$controllerURL\", \"controllerToken\": \"0\" }";
 
@@ -19,4 +19,4 @@ put ($config)
 /file set [/file find name=ControllerConfig.txt] contents="$config"
 
 /system script run ControllerUpdate
-/system scheduler add name="UpdateController" on-event=ControllerUpdate disabled=no interval=1m policy=reboot,read,write,policy,test,sniff,sensitive
+/system scheduler add name="UpdateController" on-event=ControllerUpdate disabled=no interval=1m policy=ftp,read,reboot,policy,sensitive,write
