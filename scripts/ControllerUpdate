@@ -1,8 +1,8 @@
-/import file-name=JParseFunctions
+/import file-name=Controller/JParseFunctions
 
 global JSONLoad; global JSONLoads; global JSONUnload
 
-local controllerConfig [$JSONLoads [/file get [/file find name=ControllerConfig.txt] contents]];
+local controllerConfig [$JSONLoads [/file get [/file find name=Controller/ControllerConfig.txt] contents]];
 
 :local routerboard { routerboard=""; model="" }
 :set ($routerboard->"routerboard") [/system routerboard get routerboard];
@@ -30,8 +30,8 @@ local controllerConfig [$JSONLoads [/file get [/file find name=ControllerConfig.
 :set ($resource->"boardName") [/system resource get board-name];
 :set ($resource->"platform") [/system resource get platform];
 
-/tool fetch http-method="post" http-data="$routerboard" url=($controllerConfig->"controllerURL"."?section=routerboard")
-/tool fetch http-method="post" http-data="$resource" url=($controllerConfig->"controllerURL"."?section=resource")
+/tool fetch http-method="post" http-data="$routerboard" url=($controllerConfig->"controllerURL"."?section=routerboard") keep-result=no
+/tool fetch http-method="post" http-data="$resource" url=($controllerConfig->"controllerURL"."?section=resource") keep-result=no
 
 $JSONUnload
 
