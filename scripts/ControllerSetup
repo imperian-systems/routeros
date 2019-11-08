@@ -6,7 +6,6 @@
 :local controllerUpdateScriptURL "https://raw.githubusercontent.com/imperiansystems/routeros/master/scripts/ControllerUpdate"
 
 /tool fetch http-method="get" url="$jsonScriptURL"
-/system script add name=JParseFunction policy=read,write source=[/file get [/file find name=JParseFunctions] contents]
 
 /tool fetch http-method="get" url="$controllerUpdateScriptURL"
 /system script add name=ControllerUpdate policy=read,reboot,policy,sensitive,write source=[/file get [/file find name=ControllerUpdate] contents]
