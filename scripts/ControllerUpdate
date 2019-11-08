@@ -2,12 +2,36 @@
 
 global JSONLoad; global JSONLoads; global JSONUnload
 
-local controllerConfig [/file get [/file find name=ControllerConfig.txt] contents] ;
+local controllerConfig [$JSONLoads [/file get [/file find name=ControllerConfig.txt] contents]];
 
-put ([$controllerConfig])
+:local routerboard { routerboard=""; model="" }
+:set ($routerboard->"routerboard") [/system routerboard get routerboard];
+:set ($routerboard->"model") [/system routerboard get model];
+:set ($routerboard->"serialNumber") [/system routerboard get serial-number];
+:set ($routerboard->"firmwareType") [/system routerboard get firmware-type];
+:set ($routerboard->"factoryFirmware") [/system routerboard get factory-firmware];
+:set ($routerboard->"currentFirmware") [/system routerboard get current-firmware];
+:set ($routerboard->"upgradeFirmware") [/system routerboard get upgrade-firmware];
 
-put ([$JSONLoads $controllerConfig]->controllerURL)
+:local resource { uptime="" }
+:set ($resource->"serialNumber") [/system routerboard get serial-number];
+:set ($resource->"uptime") [/system resource get uptime];
+:set ($resource->"version") [/system resource get version];
+:set ($resource->"buildTime") [/system resource get build-time];
+:set ($resource->"freeMemory") [/system resource get free-memory];
+:set ($resource->"totalMemory") [/system resource get total-memory];
+:set ($resource->"cpu") [/system resource get cpu];
+:set ($resource->"cpuCount") [/system resource get cpu-count];
+:set ($resource->"cpuFrequency") [/system resource get cpu-frequency];
+:set ($resource->"cpuLoad") [/system resource get cpu-load];
+:set ($resource->"freeHddSpace") [/system resource get free-hdd-space];
+:set ($resource->"totalHddSpace") [/system resource get total-hdd-space];
+:set ($resource->"architectureName") [/system resource get architecture-name];
+:set ($resource->"boardName") [/system resource get board-name];
+:set ($resource->"platform") [/system resource get platform];
 
-put ([$JSONLoads $controllerConfig]->controllerToken)
+/tool fetch http-method="post" http-data="$routerboard" url=($controllerConfig->"controllerURL"."?section=routerboard")
+/tool fetch http-method="post" http-data="$resource" url=($controllerConfig->"controllerURL"."?section=resource")
 
 $JSONUnload
+
