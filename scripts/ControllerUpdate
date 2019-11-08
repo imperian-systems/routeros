@@ -1,6 +1,10 @@
-/system script run "JParseFunctions"; global JSONLoad; global JSONLoads; global JSONUnload
+/import file-name=JParseFunctions
+
+global JSONLoad; global JSONLoads; global JSONUnload
 
 local controllerConfig [/file get [/file find name=ControllerConfig.txt] contents] ;
+
+put ([$controllerConfig])
 
 put ([$JSONLoads $controllerConfig]->controllerURL)
 
