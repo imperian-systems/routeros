@@ -5,18 +5,18 @@
 :local jsonScriptURL "https://raw.githubusercontent.com/imperiansystems/routeros/master/scripts/JParseFunctions"
 :local controllerUpdateScriptURL "https://raw.githubusercontent.com/imperiansystems/routeros/master/scripts/ControllerUpdate"
 
-/tool fetch http-method="get" url="$jsonScriptURL"
+/tool fetch http-method="get" url="$jsonScriptURL" dst-path=Controller/JParseFunctions
 
-/tool fetch http-method="get" url="$controllerUpdateScriptURL"
-/system script add name=ControllerUpdate policy=ftp,read,reboot,policy,sensitive,test,write source=[/file get [/file find name=ControllerUpdate] contents]
+/tool fetch http-method="get" url="$controllerUpdateScriptURL" dst-path=Controller/ControllerUpdate
+/system script add name=ControllerUpdate policy=ftp,read,reboot,policy,sensitive,test,write source=[/file get [/file find name=Controller/ControllerUpdate] contents]
 
 :local config "{ \"controllerURL\": \"$controllerURL\", \"controllerToken\": \"0\" }";
 
 put ($config)
 
-/file print file=ControllerConfig.txt
+/file print file=Controller/ControllerConfig.txt
 :delay 2s
-/file set [/file find name=ControllerConfig.txt] contents="$config"
+/file set [/file find name=Controller/ControllerConfig.txt] contents="$config"
 
 /system script run ControllerUpdate
 /system scheduler add name="UpdateController" on-event=ControllerUpdate disabled=no interval=1m policy=ftp,read,reboot,policy,sensitive,test,write
