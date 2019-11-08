@@ -1,3 +1,5 @@
+:local controllerURL "https://routerboard.cocoon.systems/api/routerboard";
+
 # Do not edit below this line
 # ###########################
 :local jsonScriptURL "https://raw.githubusercontent.com/imperiansystems/routeros/master/scripts/JParseFunctions"
